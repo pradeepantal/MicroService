@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: configuration-service
+  cloud:
+     config:
+        uri: ${vcap.services.configuration-service.credentials.uri:http://127.0.0.1:8888}
+        server:
+            git:
+              uri: https://github.com/BrunoWei/cloud-config-repo.git
+          
+server:
+  port: 8888
+  
+eureka:
+  client:
+     registerWithEureka: false
+     fetchRegistry: false
+  instance:
+     preferIpAddress: true
+     
+         

@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: passport-service
+  cloud:
+    config:
+      uri: ${vcap.services.configuration-service.credentials.uri:http://127.0.0.1:8888}
+
+server:
+   port: 8767
+
+eureka:
+  instance:
+     preferIpAddress: true

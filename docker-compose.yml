@@ -1,0 +1,74 @@
+eurekaservice:
+  image: "eureka-service:1.0.0.BUILD-SNAPSHOT"
+  hostname: eurekaservice
+  ports:
+   - "8761:8761"
+
+configservice:
+  image: "configuration-service:1.0.0.BUILD-SNAPSHOT"
+  hostname: configservice
+  links:
+    - eurekaservice
+  environment:
+     EUREKA_HOST: eurekaservice
+     EUREKA_PORT: 8761
+  ports:
+    - "8888:8888"
+
+bookmarkservice:
+  image: bookmark-service:1.0.0.BUILD-SNAPSHOT
+  hostname: bookmarkservice
+  links:
+    - eurekaservice
+    - configservice
+  environment:
+     EUREKA_HOST: eurekaservice
+     EUREKA_PORT: 8761
+     SERVER_PORT: 8080
+     SPRING_PROFILES_ACTIVE: docker
+  ports:
+    - "8082:8080"
+
+contactservice:
+  image: contact-service:1.0.0.BUILD-SNAPSHOT
+  hostname: contactservice
+  links:
+    - eurekaservice
+    - configservice
+    - bookmarkservice
+  environment:
+     EUREKA_HOST: eurekaservice
+     EUREKA_PORT: 8761
+     SPRING_PROFILES_ACTIVE: docker
+  ports:
+    - "8080:8080"
+    
+passportservice:
+  image: passport-service:1.0.0.BUILD-SNAPSHOT
+  hostname: passportservice
+  links:
+    - eurekaservice
+    - configservice
+    - bookmarkservice
+    - contactservice
+  environment:
+     EUREKA_HOST: eurekaservice
+     EUREKA_PORT: 8761
+     SPRING_PROFILES_ACTIVE: docker
+  ports:
+    - "8081:8080"
+
+dashboardservice:
+  image: dashboard-service:1.0.0.BUILD-SNAPSHOT
+  hostname: dashboardservice
+  links:
+    - eurekaservice
+    - configservice
+    - bookmarkservice
+    - contactservice
+  environment:
+     EUREKA_HOST: eurekaservice:1.0.0.BUILD-SNAPSHOT
+     EUREKA_PORT: 8761
+     SPRING_PROFILES_ACTIVE: docker
+  ports:
+    - "8989:8989"
